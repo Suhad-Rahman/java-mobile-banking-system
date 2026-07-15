@@ -40,8 +40,14 @@ public class Main {
         String mobile = scanner.nextLine();
         mobile = numberCheck(scanner, mobile);
 
-        System.out.print("Enter your pin (4+ digits): ");
+        System.out.print("Enter your pin (5 digits): ");
         int pin = scanner.nextInt();
+
+        while (pin < 10000 || pin > 99999) {
+            System.out.print("Wrong Attempt! Enter your pin again (5 digits): ");
+            pin = scanner.nextInt();
+        }
+
         scanner.nextLine(); // Clear the input buffer
 
         int transactionType = -1;
@@ -94,15 +100,23 @@ public class Main {
                 scanner.nextLine(); // Clear buffer
 
                 int wrongPinCount = 0;
+                boolean reset = false;
 
                 while (pin != pinCheck) {
                     wrongPinCount++;
                     wrongPinWarning(wrongPinCount);
+
+                    if (wrongPinCount >= 3) {
+                        reset = true;
+                        break;
+                    }
                     System.out.print("Pin Does Not Match. Enter again: ");
                     pinCheck = scanner.nextInt();
                     scanner.nextLine(); // Clear buffer
                 }
-
+                if(reset){
+                    continue;
+                }
                 balance -= amount;
                 System.out.println("\n" + amount + " BDT Send Money to " + receiver + " Successful! Remaining Balance: " + balance);
 
@@ -140,13 +154,22 @@ public class Main {
                 scanner.nextLine(); // Clear buffer
 
                 int wrongPinCount = 0;
+                boolean reset = false;
 
                 while (pin != pinCheck) {
                     wrongPinCount++;
                     wrongPinWarning(wrongPinCount);
+                    if (wrongPinCount >= 3){
+                        reset = true;
+                        break;
+                    }
                     System.out.print("Pin Does Not Match. Enter again: ");
                     pinCheck = scanner.nextInt();
                     scanner.nextLine(); // Clear buffer
+                }
+
+                if (reset) {
+                    continue;
                 }
 
                 balance -= amount;
